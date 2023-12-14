@@ -24,7 +24,7 @@
   },
   "scripts": {
     "onRelease": "publish",
-    "postPublish": "!git push && !git push --tags"
+    "postPublish": "!git push && git push --tags"
   },
   "ignore": ["**/.*", "test", "tests"]
 }
