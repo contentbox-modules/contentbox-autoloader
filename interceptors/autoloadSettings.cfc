@@ -109,21 +109,15 @@ component {
 			if( structKeyExists( permissionGroup, "permissionGroupName" ) ){
 				//writeDump( "trying to add permissionGroup #permissionGroup.permissionGroupName#" );
 				var oPermissionGroup = permissionGroupService.findWhere( { name = permissionGroup.permissionGroupName } );
-				if( isNull( oPermissionGroup ) ){
-					//writeDump( "permissionGroup #permissionGroup.permissionGroupName# does not exist." );
-				} else {
+				if( !isNull( oPermissionGroup ) && oPermissionGroup.isLoaded() ){
 					//writeDump( "permissionGroup #permissionGroup.permissionGroupName# exists - looping through permissions" );
 					if( structKeyExists( permissionGroup, "permissions" ) ){
 						for( var permission in permissionGroup.permissions ){
 							if( structKeyExists( permission, "permission" ) ){
 								//writeDump( "trying to add permission #permission.permission# to #permissionGroup.permissionGroupName#" );
 								var oPermission = permissionService.findWhere( { permission = permission.permission } );
-								if( isNull( oPermission ) ){
-									//writeDump( "#permission.permission# does not exists" );
-								} else {
-									if( oPermissionGroup.hasPermission( oPermission ) ){
-										//writeDump( "permission #permission.permission# already exists in #permissionGroup.permissionGroupName#" );
-									} else {
+								if( !isNull( oPermission ) && oPermission.isLoaded() ){
+									if( oPermissionGroup.isLoaded() && !oPermissionGroup.hasPermission( oPermission.getPermission() ) ){
 										//writeDump( "permission #permission.permission# does not exist in #permissionGroup.permissionGroupName#" );
 										oPermissionGroup.addPermission( oPermission );
 										permissionGroupService.save( oPermissionGroup );
